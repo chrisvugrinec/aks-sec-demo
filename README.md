@@ -157,6 +157,7 @@ This entry is linked to an IP address that will be linked to the Internal Loadba
 
 Please make sure when you configure a loadbalancer IP that this IP is within the range of the AKS subnet.
 
+
 #### 3.3 Assign rights and roles
 
 First start off with creating a group in Azure AD that contains users of your AKS cluster.
@@ -164,12 +165,78 @@ First start off with creating a group in Azure AD that contains users of your AK
 ![aad1](https://github.com/chrisvugrinec/aks-sec-demo/blob/master/images/aad1.png)
 
 Define a group; you can also script/automate this if you have sufficient rights on your tenant.
+After creation assign some members/developers to this group.
 
 ![aad2](https://github.com/chrisvugrinec/aks-sec-demo/blob/master/images/aad1.png)
 
+Get the objectID of this Group, by viewing the properties.
 
-change the parameters in the create.sh file to your likings
+Change the parameters in the create.sh file to your likings, make sure you use the GroupID here (param aksGroupId)
 execute the shell script: ```./3_assign_RightsAndRoles.sh```
+
+The script will assign the role ```Reader``` to the group within the scope of the new AKS cluster, this is needed to developers can actually see the AKS cluster within their azure account/subscription with this command : ```az aks list -o table ```
+
+Then it will assing the role ```Azure Kubernetes Service Cluster User Role``` to the group within the scope of the new AKS cluster, this is needed so developers can get the Kubernetes credentials with this command : ```az aks get-credentials -n [aks cluster name] -g [aks resourcegroup name]```.
+
+It will also create a NON personal account(SP) that can be used by the developers to setup their build pipeline. 
+These credentials will be store in a temp file sp-2bdistributed.txt. This is ok for the demo, but of course not in a real life scenario.
+
+We have deployed an AKS cluster which uses a managed Identity (name of managed identity is the same as the AKS cluster) in combination with an existing (pre defined) vnet using CNI. This means that the network need to permit the created managed identity to create resources on this network. A resource is for example an Internal loadbalancer.
+
+We do this in this in this script by giving the managed Identity the contributor role on the AKS subnet for this cluster only.
+
+#### 3.4 Config K8
+
+In order to execute the next steps:
+
+- configure RBAC on K8 cluster
+- create internal loadbalancer
+- deploy a test app
+  
+We need to access the vm on the bastion host. PS the bastion host could also be a buildagent and then you can automate all these steps in 1 pipeline. Even better if the buildagent on the bastion is part of the appdev resourcegroup.
+
+Before executing this on your AKS cluster you need to modify 2 yaml files:
+
+- rbac/rolebinding-aks-user.yaml; this contains 2 properties that need be changed : name of the AKS user group and name of the User. The 1st is the object ID of the AAD group for the AKS users, the 2nd is the APPID of the service principal, see example below.
+- nginx/service/loadbalancer.yaml; this contains a property ```loadBalancerIP: 10.100.1.100``` make sure this corresponds with the loadbalancerIP you have setup in your DNS
+
+```
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rolebinding-aks-user
+  namespace: dev
+subjects:
+# AKS User Group
+- kind: Group
+  name: "GROUPID GOES HERE"
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "APPID OF SP GOES HERE"
+roleRef:
+  kind: Role
+  name: role-aks-user
+  apiGroup: rbac.authorization.k8s.io
+```
+
+On the bastion host connected VM do the following:
+- ```az login```; login to azure with an admin account (the account used for creating theses resources)
+- ```az account list -o table```; list your avaiable subscriptions
+- ```az account set -s [subscription id]```; link your session to the proper subscription
+- ```az aks list -o table```; list all your available AKS cluster
+- ```az aks get-credentials -n [name of aks cluster] -g [resourcegroup of aks cluster] --admin```; get the admin credentials for the AKS cluster
+- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
