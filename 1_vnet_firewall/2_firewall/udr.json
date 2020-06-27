@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "fw-internal-ip": {
+           "type": "String"
+        },
+        "fw-public-ip": {
+           "type": "String"
+        },
+        "route_table_name": {
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/routeTables",
+            "apiVersion": "2020-04-01",
+            "name": "[parameters('route_table_name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "disableBgpRoutePropagation": false,
+                "routes": [
+                    {
+                        "name": "[parameters('route_table_name')]",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('fw-internal-ip')]"
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('route_table_name'), '_internet')]",
+                        "properties": {
+                            "addressPrefix": "[concat( parameters('fw-public-ip') ,'/32')]",
+                            "nextHopType": "Internet"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/routeTables/routes",
+            "apiVersion": "2020-04-01",
+            "name": "[concat(parameters('route_table_name'), '/', parameters('route_table_name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('route_table_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "0.0.0.0/0",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[parameters('fw-internal-ip')]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/routeTables/routes",
+            "apiVersion": "2020-04-01",
+            "name": "[concat(parameters('route_table_name'), '/', parameters('route_table_name'), '_internet')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('route_table_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[concat( parameters('fw-public-ip') ,'/32')]",
+                "nextHopType": "Internet"
+            }
+        }
+    ]
+}

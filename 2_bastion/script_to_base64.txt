@@ -1,0 +1,52 @@
+# TODO : script and all params move to AKV
+
+# devops buildagent
+export project=dude-projects
+export pat=
+export poolname=itm-agentpool1
+export agentname=agent1
+export user=chris
+
+mkdir -p /opt/buildagent/work
+cd /opt/buildagent
+
+wget https://vstsagentpackage.azureedge.net/agent/2.170.1/vsts-agent-linux-x64-2.170.1.tar.gz
+tar -zxvf  vsts-agent-linux-x64-2.170.1.tar.gz
+chown -R $user /opt/buildagent
+./bin/installdependencies.sh
+
+# end for now
+
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+sh -c 'echo -e "[azure-cli]
+name=Azure CLI
+baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+
+yum install -y azure-cli
+
+yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.7-1.x86_64.rpm
+yum install -y git
+yum install -y curl
+
+# Kubectl
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+
+yum install -y kubectl
+
+# continue devops buildagent
+cd /opt/buildagent
+
+sudo -u $user -E ./config.sh --unattended --replace --url https://dev.azure.com/$project/ --auth pat --token $pat --agent $agentname --pool $poolname --work /opt/buildagent/work
+sudo -u $user -E nohup ./run.sh &

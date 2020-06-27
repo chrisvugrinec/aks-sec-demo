@@ -1,0 +1,103 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "fw_name": {
+            "defaultValue": "demo-azure-firewall",
+            "type": "String"
+        },
+        "public_ip_id": {
+            "type": "String"
+        },
+        "mgmt_vnet_id": {
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/azureFirewalls",
+            "apiVersion": "2020-04-01",
+            "name": "[parameters('fw_name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "sku": {
+                    "name": "AZFW_VNet",
+                    "tier": "Standard"
+                },
+                "threatIntelMode": "Alert",
+                "additionalProperties": {},
+                "ipConfigurations": [
+                    {
+                        "name": "fw_ip_config",
+                        "properties": {
+                            "publicIPAddress": {
+                                "id": "[parameters('public_ip_id')]"
+                            },
+                            "subnet": {
+                                "id": "[concat(parameters('mgmt_vnet_id'), '/subnets/AzureFirewallSubnet')]"
+                            }
+                        }
+                    }
+                ],
+                "networkRuleCollections": [
+                ],
+                "applicationRuleCollections": [
+                    {
+                        "name": "AKS_Global_Required",
+                        "properties": {
+                            "priority": 100,
+                            "action": {
+                                "type": "Allow"
+                            },
+                            "rules": [
+                                {
+                                    "name": "required",
+                                    "protocols": [
+                                        {
+                                            "protocolType": "Http",
+                                            "port": 80
+                                        },
+                                        {
+                                            "protocolType": "Https",
+                                            "port": 443
+                                        }
+                                    ],
+                                    "fqdnTags": [],
+                                    "targetFqdns": [
+                                        "gov-prod-policy-data.trafficmanager.net",
+                                        "raw.githubusercontent.com",
+                                        "*.gk.australiaeast.azmk8s.io",
+                                        "dc.services.visualstudio.com",
+                                        "*.hcp.australiaeast.azmk8s.io",
+                                        "*.tun.australiaeast.azmk8s.io",
+                                        "aksrepos.azurecr.io",
+                                        "*blob.core.windows.net",
+                                        "mcr.microsoft.com",
+                                        "*cdn.mscr.io",
+                                        "*.data.mcr.microsoft.com",
+                                        "management.azure.com",
+                                        "login.microsoftonline.com",
+                                        "ntp.ubuntu.com",
+                                        "packages.microsoft.com",
+                                        "acs-mirror.azureedge.net"
+                                    ],
+                                    "sourceAddresses": [
+                                        "*"
+                                    ],
+                                    "sourceIpGroups": []
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "natRuleCollections": [
+                ]
+            }
+        }
+    ]
+}
