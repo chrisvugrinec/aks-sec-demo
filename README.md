@@ -235,9 +235,22 @@ Once you put the correct groupobject and service prinicpal object ID in the conf
 
 and mail the developers that they have an AKS cluster to their disposal which they can access with their personal accounts (if they are member of the group object) and they can configure their deployment pipelines with the SP details.
 
+In order to use your SP for your buildagent you need to have a extension on your kubectl installed for non-interactive login, using the SP. Please have a look at the [kubelogin](https://github.com/Azure/kubelogin) extension
 
+## 4. Config Kubernetes
 
+The following where used here:
 
+- https://docs.microsoft.com/en-us/azure/aks/azure-ad-rbac
+- https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype
+- https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes
+- https://docs.microsoft.com/en-us/azure/aks/private-clusters
+- https://docs.microsoft.com/en-us/azure/aks/use-managed-identity
+- https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli
+- https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview
+- https://docs.microsoft.com/en-us/azure/api-management/api-management-kubernetes
+- https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic
+  
 
 
 
