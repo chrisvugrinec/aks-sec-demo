@@ -14,14 +14,14 @@ steps:
 # Create AKS subnet and cluster according to specs
 - task: AzureCLI@2
   enabled: true
-  name: "create_AKS"
-  displayName: "Creating AKS cluster"
+  name: "create_bastion_vm"
+  displayName: "Creating VM for mgmt/builds"
   inputs:
-    azureSubscription: 'westpac-itm-infra'
+    azureSubscription: 'aks-infra-pipeline'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: './2_create.sh $(resourcegroup) $(clustername)'
-    workingDirectory: '/opt/buildagent/work/1/s/aks-security-workshop/4_aks'
+    inlineScript: './create.sh $(admin_resourcegroup) $(resourcegroup) $(location) $(mgmt_vnet) $(vm_username) $(vm_hostname) $(mgmt_subnet)'
+    workingDirectory: '/opt/buildagent/work/1/s/aks-sec-demo/2_bastion'
 
 # Link the DNS zone to the (management consoles)
 - task: AzureCLI@2
