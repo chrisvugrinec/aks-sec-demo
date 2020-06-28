@@ -22,3 +22,15 @@ steps:
     inlineScript: |
       cd pipeline/3_aks
       ./1_create.sh $(resourcegroup) $(location) $(admin_resourcegroup) $(clustername) $(aks_vnet) $(route_table) $(aks_subnet_prefix)
+
+- task: AzureCLI@2
+  enabled: true
+  name: "create_dns"
+  displayName: "Create DNS stuff"
+  inputs:
+    azureSubscription: 'aks-infra-pipeline'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      cd pipeline/3_aks
+      ./2_createDNSstuff.sh $(admin_resourcegroup) $(resourcegroup) $(mgmt_vnet) $(clustername) $(loadbalancerip)
