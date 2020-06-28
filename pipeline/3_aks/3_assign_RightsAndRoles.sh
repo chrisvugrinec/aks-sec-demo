@@ -1,10 +1,10 @@
-admin_resource_group=aks-sec-demo-admin-resources
-resource_group=aks-sec-demo-app1-resources
-cluster_name=aks-sec-demo
-aks_vnet_name=aks-vnet
+admin_resource_group=$1
+resource_group=$2
+cluster_name=$3
+aks_vnet_name=$4
 scopeId=$(az aks show -n $cluster_name -g $resource_group --query id -o tsv)
 # GroupsID configured in AAD for users of this AKS cluster(s)
-aksGroupId="e45ef353-966a-44e8-836f-dda15435b25c"
+aksGroupId=$5
 
 # Needed for developers (login with personal account)
 function createDevPersonalAccounts(){
