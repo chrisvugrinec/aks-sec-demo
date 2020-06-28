@@ -194,9 +194,19 @@ In order to execute the next steps:
 - deploy a test app
   
 We need to access the vm on the bastion host. 
-The bastion host could also be a buildagent and then you can automate all these steps in 1 pipeline. Even better if the buildagent on the bastion is part of the appdev resourcegroup.
+The bastion host could also be a buildagent and then you can automate all these steps in 1 pipeline.
 
-Before executing this on your AKS cluster you need to modify 2 yaml files:
+On the bastion host connected VM do the following:
+
+- ```az login```; login to azure with an admin account (the account used for creating theses resources)
+- ```az account list -o table```; list your avaiable subscriptions
+- ```az account set -s [subscription id]```; link your session to the proper subscription
+- ```az aks list -o table```; list all your available AKS cluster
+- ```az aks get-credentials -n [name of aks cluster] -g [resourcegroup of aks cluster] --admin```; get the admin credentials for the AKS cluster
+- ```git clone https://github.com/chrisvugrinec/aks-sec-demo.git``` ; get the sourcecode to your VM
+- cd aks-sec-demo/3_aks
+  
+Before executing the ``` 4_k8_rbac.sh``` script on your AKS cluster you need to modify 2 yaml files:
 
 - rbac/rolebinding-aks-user.yaml; this contains 2 properties that need be changed : name of the AKS user group and name of the User. The 1st is the object ID of the AAD group for the AKS users, the 2nd is the APPID of the service principal, see example below.
 - nginx/service/loadbalancer.yaml; this contains a property ```loadBalancerIP: 10.100.1.100``` make sure this corresponds with the loadbalancerIP you have setup in your DNS
@@ -220,19 +230,9 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
-On the bastion host connected VM do the following:
-- ```az login```; login to azure with an admin account (the account used for creating theses resources)
-- ```az account list -o table```; list your avaiable subscriptions
-- ```az account set -s [subscription id]```; link your session to the proper subscription
-- ```az aks list -o table```; list all your available AKS cluster
-- ```az aks get-credentials -n [name of aks cluster] -g [resourcegroup of aks cluster] --admin```; get the admin credentials for the AKS cluster
-- 
+Once you put the correct groupobject and service prinicpal object ID in the config and the proper internal loadbalancer IP, you can execute the script: ```./4_k8_rbac.sh```
 
-
-
-
-
-
+and mail the developers that they have an AKS cluster to their disposal which they can access with their personal accounts (if they are member of the group object) and they can configure their deployment pipelines with the SP details.
 
 
 
