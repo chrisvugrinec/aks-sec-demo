@@ -35,14 +35,13 @@ steps:
       cd pipeline/3_aks
       ./2_createDNSstuff.sh $(admin_resourcegroup) $(resourcegroup) $(mgmt_vnet) $(clustername) $(loadbalancerip)
 
-- task: AzureCLI@2
+- task: Bash@3
   enabled: true
   name: "role_settings"
   displayName: "Setting Rights and roles"
   inputs:
-    azureSubscription: 'aks-infra-pipeline'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
+    targetType: 'inline'
+    script: |
       cd pipeline/3_aks
       ./3_assign_RightsAndRoles.sh $(admin_resourcegroup) $(resourcegroup) $(clustername) $(aks_vnet) $(aks_user_group_id)
+      
