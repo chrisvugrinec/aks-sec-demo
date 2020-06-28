@@ -270,7 +270,7 @@ Each AKS cluster can have its own Public address linked to its own Internal Load
 
 ## 5. More tips
 
-Of course this is only the tip of the iceberg, here are some other measure you should definately look into:
+This is only the tip of the iceberg, here are some other measures you should definately look into:
 
 - Use stricter firewall rules
 - Implement the AKS policies (the admission controller is already deployed on this cluster)
