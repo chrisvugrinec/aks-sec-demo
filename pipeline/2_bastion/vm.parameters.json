@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "chris"
+        },
+        "vmName": {
+            "value": "aks-mgmt1"
+        },
+        "virtualNetworkName": {
+            "value": "mgmt-vnet"
+        },
+        "subnetName": {
+            "value": "aks-mgmt-subnet"
+        },
+        "base64-script": {
+            "value": "IyBUT0RPIDogc2NyaXB0IGFuZCBhbGwgcGFyYW1zIG1vdmUgdG8gQUtWCgojIGRldm9wcyBidWlsZGFnZW50CmV4cG9ydCBwcm9qZWN0PWR1ZGUtcHJvamVjdHMKZXhwb3J0IHBhdD0KZXhwb3J0IHBvb2xuYW1lPWl0bS1hZ2VudHBvb2wxCmV4cG9ydCBhZ2VudG5hbWU9YWdlbnQxCmV4cG9ydCB1c2VyPWNocmlzCgpta2RpciAtcCAvb3B0L2J1aWxkYWdlbnQvd29yawpjZCAvb3B0L2J1aWxkYWdlbnQKCndnZXQgaHR0cHM6Ly92c3RzYWdlbnRwYWNrYWdlLmF6dXJlZWRnZS5uZXQvYWdlbnQvMi4xNzAuMS92c3RzLWFnZW50LWxpbnV4LXg2NC0yLjE3MC4xLnRhci5negp0YXIgLXp4dmYgIHZzdHMtYWdlbnQtbGludXgteDY0LTIuMTcwLjEudGFyLmd6CmNob3duIC1SICR1c2VyIC9vcHQvYnVpbGRhZ2VudAouL2Jpbi9pbnN0YWxsZGVwZW5kZW5jaWVzLnNoCgojIGVuZCBmb3Igbm93CgpycG0gLS1pbXBvcnQgaHR0cHM6Ly9wYWNrYWdlcy5taWNyb3NvZnQuY29tL2tleXMvbWljcm9zb2Z0LmFzYwoKc2ggLWMgJ2VjaG8gLWUgIlthenVyZS1jbGldCm5hbWU9QXp1cmUgQ0xJCmJhc2V1cmw9aHR0cHM6Ly9wYWNrYWdlcy5taWNyb3NvZnQuY29tL3l1bXJlcG9zL2F6dXJlLWNsaQplbmFibGVkPTEKZ3BnY2hlY2s9MQpncGdrZXk9aHR0cHM6Ly9wYWNrYWdlcy5taWNyb3NvZnQuY29tL2tleXMvbWljcm9zb2Z0LmFzYyIgPiAvZXRjL3l1bS5yZXBvcy5kL2F6dXJlLWNsaS5yZXBvJwoKeXVtIGluc3RhbGwgLXkgYXp1cmUtY2xpCgp5dW0gLXkgaW5zdGFsbCBodHRwczovL3BhY2thZ2VzLmVuZHBvaW50LmNvbS9yaGVsLzcvb3MveDg2XzY0L2VuZHBvaW50LXJlcG8tMS43LTEueDg2XzY0LnJwbQp5dW0gaW5zdGFsbCAteSBnaXQKeXVtIGluc3RhbGwgLXkgY3VybAoKIyBLdWJlY3RsCmNhdCA8PEVPRiA+IC9ldGMveXVtLnJlcG9zLmQva3ViZXJuZXRlcy5yZXBvCltrdWJlcm5ldGVzXQpuYW1lPUt1YmVybmV0ZXMKYmFzZXVybD1odHRwczovL3BhY2thZ2VzLmNsb3VkLmdvb2dsZS5jb20veXVtL3JlcG9zL2t1YmVybmV0ZXMtZWw3LXg4Nl82NAplbmFibGVkPTEKZ3BnY2hlY2s9MQpyZXBvX2dwZ2NoZWNrPTEKZ3Bna2V5PWh0dHBzOi8vcGFja2FnZXMuY2xvdWQuZ29vZ2xlLmNvbS95dW0vZG9jL3l1bS1rZXkuZ3BnIGh0dHBzOi8vcGFja2FnZXMuY2xvdWQuZ29vZ2xlLmNvbS95dW0vZG9jL3JwbS1wYWNrYWdlLWtleS5ncGcKRU9GCgp5dW0gaW5zdGFsbCAteSBrdWJlY3RsCgojIGNvbnRpbnVlIGRldm9wcyBidWlsZGFnZW50CmNkIC9vcHQvYnVpbGRhZ2VudAoKc3VkbyAtdSAkdXNlciAtRSAuL2NvbmZpZy5zaCAtLXVuYXR0ZW5kZWQgLS1yZXBsYWNlIC0tdXJsIGh0dHBzOi8vZGV2LmF6dXJlLmNvbS8kcHJvamVjdC8gLS1hdXRoIHBhdCAtLXRva2VuICRwYXQgLS1hZ2VudCAkYWdlbnRuYW1lIC0tcG9vbCAkcG9vbG5hbWUgLS13b3JrIC9vcHQvYnVpbGRhZ2VudC93b3JrCnN1ZG8gLXUgJHVzZXIgLUUgbm9odXAgLi9ydW4uc2ggJgo="
+        },
+        "adminPublicKey":{
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC564TR4TdjhHvL4PFJ94UzO6dwUTjSfR/ppxVa7bCHQ65pgAIBkQfdKJSIc/7zQf2C8wP+dz3897A/4Om8eqRLNwJGfQn5bJabA478DSPjJHn8RVp2WzSWKeGUA/50zl8U8D/cqrg33sTxr0ATh2Ll+6F+J1FqBefTU2ZX/AK6wLQU/OOC+ig6Eo5r9cLitSfbb/Ga8AIsiDQZtYL9hm2qzIfMApI1kXLPnBugd4gCrb4negSnoZNvmPP2x/lz3iScHmtSvAsPAwXIjwilp8ZD3Pi9Y1SyldAfTkR4dCto2BLlCjSsJSx8A9L+F0GRXAcsdMztDUvE3gZZAOTfECIV cvugrinec@Chriss-MacBook-Pro.local" 
+        }
+    }
+}
