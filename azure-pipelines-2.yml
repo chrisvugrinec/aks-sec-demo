@@ -12,7 +12,7 @@ pool:
 steps:
 # Create AKS subnet and cluster according to specs
 - task: AzureCLI@2
-  enabled: true
+  enabled: false
   name: "create_aks"
   displayName: "Create AKS"
   inputs:
@@ -24,7 +24,7 @@ steps:
       ./1_create.sh $(resourcegroup) $(location) $(admin_resourcegroup) $(clustername) $(aks_vnet) $(route_table) $(aks_subnet_prefix)
 
 - task: AzureCLI@2
-  enabled: true
+  enabled: false
   name: "create_dns"
   displayName: "Create DNS stuff"
   inputs:
