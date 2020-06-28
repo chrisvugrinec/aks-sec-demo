@@ -1,0 +1,21 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  name : 'dude-demos'
+
+steps:
+- task: AzureCLI@2
+  enabled: false
+  name: "create_aks"
+  inputs:
+    azureSubscription: 'westpac-itm-infra'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: './2_create.sh $(resourcegroup) $(clustername)'
+    workingDirectory: '/opt/buildagent/work/1/s/aks-security-workshop/4_aks'
