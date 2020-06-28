@@ -41,7 +41,7 @@ function createUDR(){
    az deployment group create -g $resource_group --template-file ./udr.json --parameters fw-internal-ip=$fw_private_ip fw-public-ip=$fw_public_ip route_table_name=$route_table_name
 }
 
-createPip
-createSubnet
+#createPip
+#createSubnet
 createFirewall
-createUDR
+#createUDR

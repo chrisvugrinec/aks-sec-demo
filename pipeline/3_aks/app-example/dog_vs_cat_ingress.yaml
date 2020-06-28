@@ -5,7 +5,7 @@ metadata:
   namespace: dev
 spec:
   rules:
-  - host: aks-itm-flink.demo.com
+  - host: aks-sec-demo.demo.com
     http:
       paths:
       - path: /

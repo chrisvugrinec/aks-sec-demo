@@ -155,7 +155,28 @@
                                     ],
                                     "sourceIpGroups": []
                                 },
-                                                                {
+                                {
+                                    "name": "NeededForDemo_Policy_DockerHUB",
+                                    "protocols": [
+                                        {
+                                            "protocolType": "Https",
+                                            "port": 443
+                                        }
+                                    ],
+                                    "fqdnTags": [],
+                                    "targetFqdns": [
+                                        "auth.docker.io",
+                                        "registry-1.docker.io",
+                                        "index.docker.io",
+                                        "dseasb33srnrn.cloudfront.net",
+                                        "production.cloudflare.docker.com"
+                                    ],
+                                    "sourceAddresses": [
+                                        "*"
+                                    ],
+                                    "sourceIpGroups": []
+                                },
+                                {
                                     "name": "Required_Policy_AKS",
                                     "protocols": [
                                         {
@@ -176,7 +197,7 @@
                                     "sourceIpGroups": []
                                 },
                                 {
-                                    "name": "AKS_Node_API_Communication",
+                                    "name": "AKS_Node_API_FROM_NODE_Communication",
                                     "protocols": [
                                         {
                                             "protocolType": "Https",
@@ -198,6 +219,30 @@
                                     ],
                                     "sourceIpGroups": []
                                 },
+                                {
+                                    "name": "AKS_Node_API_FROM_API_Communication",
+                                    "protocols": [
+                                        {
+                                            "protocolType": "Https",
+                                            "port": 443
+                                        },
+                                        {
+                                            "protocolType": "Http",
+                                            "port": 80
+                                        }
+                                    ],
+                                    "fqdnTags": [],
+                                    "targetFqdns": [
+                                        "*.privatelink.___LOCATION___.azmk8s.io",
+                                        "*.hcp.___LOCATION___.azmk8s.io",
+                                        "*.tun.___LOCATION___.azmk8s.io"
+                                    ],
+                                    "sourceAddresses": [
+                                        "*"
+                                    ],
+                                    "sourceIpGroups": []
+                                },
+
                                 {
                                     "name": "AKS_AzureMonitoring_Requirement",
                                     "protocols": [

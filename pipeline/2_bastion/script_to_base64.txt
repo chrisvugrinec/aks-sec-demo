@@ -3,7 +3,7 @@
 # devops buildagent
 export project=dude-projects
 export pat=
-export poolname=itm-agentpool1
+export poolname=dude-demos
 export agentname=agent1
 export user=chris
 

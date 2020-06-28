@@ -1,0 +1,27 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+steps:
+
+# Create AKS subnet and cluster according to specs
+- task: AzureCLI@2
+  enabled: false
+  name: "create_mgmt_vm"
+  displayName: "Create VM for appdev team"
+  inputs:
+    azureSubscription: 'aks-infra-pipeline'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "params: $(admin_resourcegroup) $(resourcegroup) $(location) $(mgmt_vnet) $(vm_username) $(vm_hostname) $(mgmt_subnet)"
+      cd pipeline/2_bastion
+      ./create.sh $(admin_resourcegroup) $(resourcegroup) $(location) $(mgmt_vnet) $(vm_username) $(vm_hostname) $(mgmt_subnet)
+
+
+
+
