@@ -18,8 +18,10 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      echo "params: $(admin_resource_group) $(resource_group) $(location) $(mgmt_vnet_name) $(vm_username) $(vm_hostname) $(mgmt_subnet_name)"
+      echo "params: $(admin_resourcegroup) $(resourcegroup) $(location) $(mgmt_vnet) $(vm_username) $(vm_hostname) $(mgmt_subnet)"
+      pwd
       cd pipeline/2_bastion
-      ./create.sh $(admin_resource_group) $(resource_group) $(location) $(mgmt_vnet_name) $(vm_username) $(vm_hostname) $(mgmt_subnet_name)
+      pwd
+      ./create.sh $(admin_resourcegroup) $(resourcegroup) $(location) $(mgmt_vnet) $(vm_username) $(vm_hostname) $(mgmt_subnet)
 
 
