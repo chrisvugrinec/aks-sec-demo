@@ -1,9 +1,9 @@
-admin_resource_group=aks-sec-demo-admin-resources
-resource_group=aks-sec-demo-app1-resources
-mgmt_network=mgmt-vnet
-cluster_name=aks-sec-demo
+admin_resource_group=$1
+resource_group=$2
+mgmt_network=$3
+cluster_name=$4
 # this should be an ip within the aks subnet range
-loadbalancerip=10.100.1.100
+loadbalancerip=$5
 
 fqdn=$(az aks show -n $cluster_name -g $resource_group --query privateFqdn -o tsv)
 zoneName=$(echo $fqdn | sed 's/^[^.]*.//')

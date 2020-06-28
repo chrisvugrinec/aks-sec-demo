@@ -1,11 +1,11 @@
 # Parameters
-resource_group=aks-sec-demo-app1-resources
-location=australiaeast
-admin_resource_group=aks-sec-demo-admin-resources
-clustername=aks-sec-demo
-aks_vnet_name="aks-vnet"
-route_table_name="aks-sec-demo-routetable"
-aksSubnetPrefix=10.100.1.0/24
+resource_group=$1
+location=$2
+admin_resource_group=$3
+clustername=$4
+aks_vnet_name=$5
+route_table_name=$6
+aksSubnetPrefix=$7
 dnsPrefix=$clustername
 
 # subnet
