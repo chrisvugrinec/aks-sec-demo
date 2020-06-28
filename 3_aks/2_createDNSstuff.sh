@@ -1,3 +1,4 @@
+# Params
 admin_resource_group=aks-sec-demo-admin-resources
 resource_group=aks-sec-demo-app1-resources
 mgmt_network=mgmt-vnet

@@ -1,4 +1,4 @@
-# Parameters
+# Params
 resource_group=aks-sec-demo-app1-resources
 location=australiaeast
 admin_resource_group=aks-sec-demo-admin-resources

@@ -1,4 +1,4 @@
-# Parameters
+# Params
 resource_group=aks-sec-demo-admin-resources
 vnetMgmtName=mgmt-vnet
 vnetAksName=aks-vnet
