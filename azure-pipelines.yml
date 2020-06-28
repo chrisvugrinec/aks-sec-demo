@@ -18,5 +18,5 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: './create.sh $(admin_resource_group) $(resource_group) $(location) $(mgmt_vnet_name) $(vm_username) $(vm_hostname) $(mgmt_subnet_name)'
-    workingDirectory: '/opt/buildagent/work/1/s/aks-sec-demo/pipeline/2_bastion'
+    workingDirectory: 'aks-sec-demo/pipeline/2_bastion'
 
