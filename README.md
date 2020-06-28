@@ -237,11 +237,49 @@ roleRef:
 
 Once you put the correct groupobject and service prinicpal object ID in the config and the proper internal loadbalancer IP, you can execute the script: ```./4_k8_rbac.sh```
 
-and mail the developers that they have an AKS cluster to their disposal which they can access with their personal accounts (if they are member of the group object) and they can configure their deployment pipelines with the SP details.
+and mail the developers that they have an AKS cluster to their disposal which they can access with their personal accounts (if they are member of the group object).
+
+## 4. Deployment APP
 
 In order to use your SP for your buildagent you need to have a extension on your kubectl installed for non-interactive login, using the SP. Please have a look at the [kubelogin](https://github.com/Azure/kubelogin) extension
 
-## 4. Config Kubernetes
+As a developer with this cookbook you only have access to the DEV namespace and READ access to the nginx-ingress namespace. 
+
+- Login with your azure credentials on the build/management host and get your credentials: ```az aks get-credentials -n [ aks_cluster_name ] -g [ resourcegroup names ]```
+- Set your default namespace with this command: ```kubectl config set-context --current --namespace dev```
+- cd pipeline/3_aks/app-example and deploy the app with ```kubectl apply -f dog_vs_cat.yaml```
+- expose the dog_vs_cat deployment by adding an ingress rule on the existing ingress controller (currently only available via internal loadbalancer) ```kubectl apply -f dog_vs_cat-ingressl.yaml```
+
+After executing this you should be able to see the ingress rule:
+  
+```
+[chris@appdev-vm1 app-example]$ kubectl get ing
+NAME              CLASS    HOSTS                   ADDRESS   PORTS   AGE
+dogvcat-ingress   <none>   aks-sec-demo.demo.com             80      10m
+```
+
+You should also be able to test it with the curl command:
+
+```
+curl http://aks-sec-demo.demo.com 
+```
+
+If you like to make this service available on the internet, create a NAT rule in the Azure Firell that translates the External IP address into the Internal Loadbalancer address. 
+
+Each AKS cluster can have its own Public address linked to its own Internal Loadbalancer;  Azure Firewall support currently up to 250 Public IP addresses.
+
+## 5. More tips
+
+Of course this is only the tip of the iceberg, here are some other measure you should definately look into:
+
+- Use stricter firewall rules
+- Implement the AKS policies (the admission controller is already deployed on this cluster)
+- Only use trusted repositories
+- Implement and enforce SSL traffic only
+- Use container scanning
+- Implement a Service Mesh for East - West network traffic
+
+## 6. Links
 
 The following where used here:
 
