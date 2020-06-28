@@ -10,10 +10,15 @@ pool:
   name: 'dude-demos'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# Create AKS subnet and cluster according to specs
+- task: AzureCLI@2
+  enabled: true
+  name: "create_aks"
+  displayName: "Create AKS"
+  inputs:
+    azureSubscription: 'aks-infra-pipeline'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      cd pipeline/3_aks
+      ./1_create.sh $(resourcegroup) $(location) $(admin_resourcegroup) $(clustername) $(aks_vnet) $(route_table) $(aks_subnet_prefix)
