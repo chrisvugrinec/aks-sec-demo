@@ -4,9 +4,12 @@ metadata:
   name: rolebinding-aks-user-ingress
   namespace: nginx-ingress
 subjects:
-# AKS User Group 
+# AKS User Group
 - kind: Group
-  name: "2e9d53f9-f11e-46ec-a571-a0fd4809f602"
+  name: "e45ef353-966a-44e8-836f-dda15435b25c"
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "bedf1091-0819-47a7-8b6a-1efba6cafdb3"
 roleRef:
   kind: Role
   name: role-aks-user-ingress

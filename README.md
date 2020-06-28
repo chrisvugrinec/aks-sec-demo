@@ -206,9 +206,10 @@ On the bastion host connected VM do the following:
 - ```git clone https://github.com/chrisvugrinec/aks-sec-demo.git``` ; get the sourcecode to your VM
 - cd aks-sec-demo/3_aks
   
-Before executing the ``` 4_k8_rbac.sh``` script on your AKS cluster you need to modify 2 yaml files:
+Before executing the ``` 4_k8_rbac.sh``` script on your AKS cluster you need to modify 3 yaml files:
 
 - rbac/rolebinding-aks-user.yaml; this contains 2 properties that need be changed : name of the AKS user group and name of the User. The 1st is the object ID of the AAD group for the AKS users, the 2nd is the APPID of the service principal, see example below.
+- rbac/rolebinding-aks-user-ingress.yaml;  same as previous one, only to see some resources in the nginx-ingress namespace (svc)
 - nginx/service/loadbalancer.yaml; this contains a property ```loadBalancerIP: 10.100.1.100``` make sure this corresponds with the loadbalancerIP you have setup in your DNS
 
 ```
