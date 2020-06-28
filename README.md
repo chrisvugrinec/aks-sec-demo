@@ -1,4 +1,4 @@
-# aks enterprise security
+# First steps enterprise security for AKS
 
 ## Intro
 
@@ -185,7 +185,7 @@ We have deployed an AKS cluster which uses a managed Identity (name of managed i
 
 We do this in this in this script by giving the managed Identity the contributor role on the AKS subnet for this cluster only.
 
-#### 3.4 Config K8
+#### 3.4 Config Kubernetes
 
 In order to execute the next steps:
 
@@ -193,7 +193,8 @@ In order to execute the next steps:
 - create internal loadbalancer
 - deploy a test app
   
-We need to access the vm on the bastion host. PS the bastion host could also be a buildagent and then you can automate all these steps in 1 pipeline. Even better if the buildagent on the bastion is part of the appdev resourcegroup.
+We need to access the vm on the bastion host. 
+The bastion host could also be a buildagent and then you can automate all these steps in 1 pipeline. Even better if the buildagent on the bastion is part of the appdev resourcegroup.
 
 Before executing this on your AKS cluster you need to modify 2 yaml files:
 

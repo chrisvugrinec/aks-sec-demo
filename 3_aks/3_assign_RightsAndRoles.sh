@@ -25,6 +25,6 @@ function assignContribRoleToManagedIdentity(){
    az role assignment create --assignee $appId --role "Contributor" --scope $subnetId
 }
 
-#createDevPersonalAccounts
-#createDevNonPersonalAccount
+createDevPersonalAccounts
+createDevNonPersonalAccount
 assignContribRoleToManagedIdentity

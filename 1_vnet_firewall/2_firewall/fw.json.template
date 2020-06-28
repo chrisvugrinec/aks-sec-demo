@@ -167,7 +167,7 @@
                                     "targetFqdns": [
                                         "gov-prod-policy-data.trafficmanager.net",
                                         "raw.githubusercontent.com",
-                                        "*.gk.australiaeast.azmk8s.io",
+                                        "*.gk.___LOCATION___.azmk8s.io",
                                         "dc.services.visualstudio.com"
                                     ],
                                     "sourceAddresses": [
@@ -189,9 +189,9 @@
                                     ],
                                     "fqdnTags": [],
                                     "targetFqdns": [
-                                        "*.privatelink.australiaeast.azmk8s.io",
-                                        "*.hcp.australiaeast.azmk8s.io",
-                                        "*.tun.australiaeast.azmk8s.io"
+                                        "*.privatelink.___LOCATION___.azmk8s.io",
+                                        "*.hcp.___LOCATION___.azmk8s.io",
+                                        "*.tun.___LOCATION___.azmk8s.io"
                                     ],
                                     "sourceAddresses": [
                                         "*"

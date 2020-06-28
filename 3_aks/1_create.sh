@@ -14,7 +14,7 @@ function createSubnet(){
 }
 
 # link
-function createLinkToRoutTable(){
+function createLinkToRouteTable(){
    az network vnet subnet update -g $admin_resource_group --vnet-name $aks_vnet_name --name $clustername-subnet --route-table $route_table_name
 }
 
@@ -22,10 +22,10 @@ function createLinkToRoutTable(){
 function createAksCluster(){
    subscriptionId=$(az account show --query id -o tsv)
    tenantID=$(az account show --query homeTenantId -o tsv)
-   az group create -n $resource_group -l $location
    az deployment group create -g $resource_group --template-file ./aks.json --parameters ./aks.parameters.json --parameters clusterName=$clustername existingVirtualNetworkName=$aks_vnet_name dnsPrefix=$dnsPrefix subscriptionId=$subscriptionId tenantID=$tenantID existingVirtualNetworkResourceGroup=$admin_resource_group
 }
 
-#createSubnet
-#createLinkToRoutTable
+createSubnet
+createLinkToRouteTable
 createAksCluster
+
