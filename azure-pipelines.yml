@@ -6,9 +6,6 @@
 #trigger:
 #- master
 
-pool:
-  name : 'dude-demos'
-
 steps:
 
 # Create AKS subnet and cluster according to specs
