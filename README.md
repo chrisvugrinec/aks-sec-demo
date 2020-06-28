@@ -2,7 +2,7 @@
 
 ## Intro
 
-This repo should be considered as a cookbook on how to setup a secure enterprise ready AKS solution. After the rollout your solution will look something like this:
+This repo contains a cookbook which shows you how to setup a secure enterprise ready AKS solution. 
 
 ![aks-security-ctx](https://github.com/chrisvugrinec/aks-sec-demo/blob/master/images/aks-secure-ctx.png)
 
@@ -17,12 +17,14 @@ This document addresses the following security boundaries:
 - Policies
 - Application Security
 
-Accessibility is making the "attack" surface as small as possible. The less exposed you are the harder it will be to be discovered. In order to access this AKS cluster you will need to have network accessibility which is not directly exposed to the internet initially. Mitigation for this implementation:
+*Accessibility*
+Accessibility is making the "attack" surface as small as possible. In order to access this AKS cluster you will need to have network accessibility which is not directly exposed to the internet initially. Mitigation for this implementation:
 
 - AKS private cluster
 - Enforce traffic (UDR) to expose only via Azure Firewall
 - Disallow creation of public (internet) services on AKS
 
+*Authentication/ Authorisation*
 This cluster is only valid by Persons with a valid credential. Next to that a Non personal account (Service Principal) will be generated for potential build pipelines. There will be a distinction in Administrators (maintainers of the (AKS) infra) and developer (the end users of this cluster).
 RBAC will be implemented so that the Personal and Non Personal accounts can only do the allowed operations with the designated namespace within the cluster. No cluster wide roles will be implemented. Mitigations for RBAC and IAM:
 
@@ -30,17 +32,19 @@ RBAC will be implemented so that the Personal and Non Personal accounts can only
 - Enforce RBAC
 - Rollout cluster with AAD admin groupID
 
+*Policies*
 Policies will be used to enforce governance over the subscription and the underlying AKS clusters and its components. Per AKS cluster a policy enforcer will be deployed which will act as a realtime admission controller to check that the actions are within the policy of the subscription. Initial enabled policies will be:
 
 - enforcement of exposing services only via Internal Loadbalancer
 - no allowed usage of elevated containers
 - only allow the usage of trusted container repositories
 
+*Application Security*
 Application Security encompasses features like pod identies, secret management and potential implementations of service meshes. This topic is not in scope for this document.
 
 ### AKS features
 
-In order to enable all the aspects, we are enabling the following AKS features/ parameters:
+In this cookbook we are enabling the following AKS features/ parameters:
 
 - [enable-rbac](https://docs.microsoft.com/en-us/azure/aks/azure-ad-rbac); configure fine grained AKS rbac. With the aad-admin-group-object-ids param you can define a group ID of Administrators who have elevated K8 rbac rights
 - [outbound-type (userDefinedRouting)](https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype); define a predefined route for your AKS traffic
@@ -49,20 +53,20 @@ In order to enable all the aspects, we are enabling the following AKS features/ 
 - [enable-managed-identity](https://docs.microsoft.com/en-us/azure/aks/use-managed-identity); no more Service Principals in your config. 
 - [enable-aad](https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli); nicde integration with Azure Active Directory
   
-Please note that some features are still in preview and that there are other excellent solutions available as well you can use in combination or as an alternative to this cookbook.
+Please note that some features are still in preview and that there are other excellent solutions available as well. You can use these solutions in combination or as an alternative to this cookbook.
 
 - [App Gateway Ingress Controller](https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview); a managed add-on for AKS linking an ingress controller with App Gateway. Ideal for adding policies and reverse proxy rules.
 - [API management gateway](https://docs.microsoft.com/en-us/azure/api-management/api-management-kubernetes); ideal for a scenario where you like to have 1 gateway for accessing all your (rest) services. 
 
 ### Workflow
 
-The assumption here is that there is a cloud team, responsible for rolling out the (AKS) infrastructure and that there will be a App dev team that will be the end users of AKS.
+The assumption here is that there is a cloud team, responsible for rolling out the (AKS) infrastructure and that there will be an App dev team. That team will be the endusers of AKS cluster.
 
 ![aks-security-workflow](https://github.com/chrisvugrinec/aks-sec-demo/blob/master/images/steps.png)
 
-Steps 1 and 2 are executed by the cloud team, step 3 is exectuted by the app dev team using the AKS cluster. The app dev team can use the AKS cluster eiter with their user account or with the provisioned Service Principal, which they can use to setup their deployment pipelines.
+Steps 1 and 2 are executed by the cloud team, step 3 is exectuted by the app dev team using the AKS cluster. The app dev team can use the AKS cluster eiter with their user account or with the provisioned Service Principal. The SP can be used to setup their deployment pipelines.
 
-No assumptions will be made on CICD tooling, everyhing in the cookbook will be done with basic azure-cli and kubectl commands. Have not tested it on a windows machine as I am using a mac, but it should run on linux/windows as well. In any case you can always use the Integrated cloud shell in the Azure portal.
+No assumptions will be made on CICD tooling, everything in this cookbook will be done with basic azure-cli and kubectl commands. Have not tested it on a windows machine as I am using a mac, but it should run on linux/windows as well. In any case you can always use the Integrated cloud shell in the Azure portal.
 
 ## Cookbook
 
