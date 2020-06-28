@@ -10,7 +10,7 @@ steps:
 
 # Create AKS subnet and cluster according to specs
 - task: AzureCLI@2
-  enabled: true
+  enabled: false
   name: "create_mgmt_vm"
   displayName: "Create VM for appdev team"
   inputs:
@@ -19,9 +19,8 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       echo "params: $(admin_resourcegroup) $(resourcegroup) $(location) $(mgmt_vnet) $(vm_username) $(vm_hostname) $(mgmt_subnet)"
-      pwd
       cd pipeline/2_bastion
-      pwd
       ./create.sh $(admin_resourcegroup) $(resourcegroup) $(location) $(mgmt_vnet) $(vm_username) $(vm_hostname) $(mgmt_subnet)
+
 
 
