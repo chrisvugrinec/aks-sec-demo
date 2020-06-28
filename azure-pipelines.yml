@@ -1,0 +1,93 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  name : 'dude-demos'
+
+steps:
+
+# Create AKS subnet and cluster according to specs
+- task: AzureCLI@2
+  enabled: true
+  name: "create_AKS"
+  inputs:
+    azureSubscription: 'westpac-itm-infra'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: './2_create.sh $(resourcegroup) $(clustername)'
+    workingDirectory: '/opt/buildagent/work/1/s/aks-security-workshop/4_aks'
+
+# Link the DNS zone to the (management consoles)
+- task: AzureCLI@2
+  enabled: false
+  name: "link_private_DNS"
+  inputs:
+    azureSubscription: 'westpac-itm-infra'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: './3_createDnsLink.sh'
+    workingDirectory: '/opt/buildagent/work/1/s/aks-security-workshop/4_aks'
+
+# Get the credential for K8 in order to create NS and RBAC
+- task: AzureCLI@2
+  enabled: false
+  name: "create_AKS_credential_config"
+  inputs:
+    azureSubscription: 'westpac-itm-infra'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az aks get-credentials -n aks-itm-flink -g westpac --admin --overwrite-existing'
+
+
+
+# Setting Contributor role on the AKS subnet for aks-itm-flink managed identity
+# unable to use SPN or managed Identity due to unsufficient rights on current AD tenant
+- task: Bash@3
+  enabled: false
+  displayName: "Link Managed ID to AKS subnet"
+  name: "link_managedId_to_AKS_subnet_as_contributor_hack"
+  inputs:
+    targetType: 'inline'
+    script: |
+      appId=$(az ad sp list --all --filter "displayname eq 'aks-itm-flink'" --query [].appId -o tsv)
+      subnetId=$(az network vnet subnet show -n aks-itm-subnet1 -g westpac --vnet-name aks-vnet --query id -o tsv)
+      az role assignment create --assignee $appId --role "Contributor" --scope $subnetId
+      
+
+- task: Bash@3
+  enabled: false
+  displayName: "Give access to dev teams"
+  name: "give_access_to_devs"
+  inputs:
+      targetType: 'inline'
+      script: |
+        sh /opt/buildagent/work/1/s/aks-security-workshop/4_aks/4_assign_groupRights.sh
+
+# Configure AKS cluster
+- task: Bash@3
+  enabled: false
+  displayName: "Configure AKS cluster"
+  name: "config_AKS_cluster"
+  inputs:
+    targetType: 'inline'
+    script: |
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/rbac/dev-namespace.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/rbac/role-aks-user.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/rbac/rolebinding-aks-user.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/rbac/role-aks-user-ingress.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/rbac/rolebinding-aks-user-ingress.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/common/ns-and-sa.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/rbac/rbac.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/common/default-server-secret.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/common/nginx-config.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/common/vs-definition.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/common/vsr-definition.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/common/ts-definition.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/deployment/nginx-ingress.yaml
+      kubectl apply -f /opt/buildagent/work/1/s/aks-security-workshop/4_aks/nginx/service/loadbalancer.yaml
+
