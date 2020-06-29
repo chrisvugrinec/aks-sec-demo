@@ -277,7 +277,8 @@ This is only the tip of the iceberg, here are some other measures you should def
 - Only use trusted repositories
 - Implement and enforce SSL traffic only
 - Use container scanning
-- Implement a Service Mesh for East - West network traffic
+- Implement a Service Mesh for East - West network traffic or
+- Use a Network Policy (Azure native) or Calico (3rd party) implementation
 
 ## 6. Links
 
@@ -292,6 +293,7 @@ The following where used here:
 - https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview
 - https://docs.microsoft.com/en-us/azure/api-management/api-management-kubernetes
 - https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic
+- https://docs.microsoft.com/en-us/azure/aks/use-network-policies
   
 
 
