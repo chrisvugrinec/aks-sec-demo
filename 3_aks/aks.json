@@ -5,6 +5,9 @@
         "tenantID": {
             "type": "string"
         },
+        "adminGroupId":{
+            "type": "string"
+        },
         "subscriptionId": {
             "type": "string"
         },
@@ -150,6 +153,9 @@
                 "dnsPrefix": "[parameters('dnsPrefix')]",
                 "aadProfile": {
                     "managed": true,
+                    "adminGroupObjectIDs": [
+                        "[parameters('adminGroupId')]"
+                    ],
                     "tenantID": "[parameters('tenantID')]"
                 },
                 "addonProfiles": {

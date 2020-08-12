@@ -2,7 +2,7 @@
 admin_resource_group=aks-sec-demo-admin-resources
 resource_group=aks-sec-demo-app1-resources
 mgmt_network=mgmt-vnet
-cluster_name=aks-sec-demo
+cluster_name=aks-testcluster
 # this should be an ip within the aks subnet range
 loadbalancerip=10.100.1.100
 
